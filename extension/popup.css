@@ -1,0 +1,81 @@
+body {
+    width: 350px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.header {
+    background-color: #1a73e8;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+#refreshBtn {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#refreshBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#logsContainer {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.log-item {
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-left: 4px solid #ccc;
+}
+
+.log-item.opened {
+    border-left-color: #34a853; /* Green for opened */
+}
+
+.log-item .subject {
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.log-item .details {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.log-item .status {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status.opened {
+    color: #34a853;
+}
+
+.status.unread {
+    color: #ea4335;
+}
