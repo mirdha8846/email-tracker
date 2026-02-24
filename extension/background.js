@@ -12,7 +12,7 @@ chrome.runtime.onInstalled.addListener(() => {
         priority: 1,
         action: { type: 'block' },
         condition: {
-            urlFilter: SERVER_URL + '/track/*',
+            urlFilter: '*email-tracker-cy15.onrender.com/track*',
             resourceTypes: ['image']
         }
     };
