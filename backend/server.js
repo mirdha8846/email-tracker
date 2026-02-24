@@ -87,6 +87,19 @@ app.get('/track/:id', (req, res) => {
     console.log(`[PIXEL] IP: ${ipAddress}`);
     console.log(`[PIXEL] User-Agent: ${userAgent}`);
 
+    // Prevent Gmail or Yahoo automated pre-fetching (Image Proxies) from registering as a true open
+    // Google caches images by fetching them via GoogleImageProxy as soon as an email enters an inbox or sent folder.
+    if (userAgent && (userAgent.includes('GoogleImageProxy') || userAgent.includes('yahoo'))) {
+        console.log(`[PIXEL] Ignored automated pre-fetch proxy for ID: ${trackingId}`);
+        res.writeHead(200, {
+            'Content-Type': 'image/gif',
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+        });
+        return res.end(TRANSPARENT_PIXEL, 'binary');
+    }
+
     // Update the database to mark as opened.
     // We no longer need an artificial delay because the sender's own Chrome extension
     // now blocks the pixel from loading locally.

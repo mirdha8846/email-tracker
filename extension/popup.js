@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Change this back to http://localhost:3000 if you test locally again
-    const SERVER_URL = 'http://localhost:3000';
+    const SERVER_URL = 'https://email-tracker-cy15.onrender.com';
 
     const logsContainer = document.getElementById('logsContainer');
     const refreshBtn = document.getElementById('refreshBtn');
