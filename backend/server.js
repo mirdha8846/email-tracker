@@ -88,12 +88,13 @@ app.get('/track/:id', (req, res) => {
     console.log(`[PIXEL] User-Agent: ${userAgent}`);
 
     // Update the database to mark as opened.
-    // We no longer need an artificial delay because the sender's own Chrome extension
-    // now blocks the pixel from loading locally.
+    // We require a 10-second delay between generating the tracker (`sent_at`)
+    // and registering the open to bypass Google's immediate pre-fetch proxies
+    // which scan the email sub-second after it hits an inbox or outbox.
     db.run(
         `UPDATE tracking_logs 
          SET opened = 1, opened_at = CURRENT_TIMESTAMP, ip_address = ?, user_agent = ? 
-         WHERE id = ? AND opened = 0`, 
+         WHERE id = ? AND opened = 0 AND (julianday('now') - julianday(sent_at)) * 86400 > 10`, 
         [ipAddress, userAgent, trackingId],
         function(err) {
             if (err) console.error("Error updating tracking log:", err);
