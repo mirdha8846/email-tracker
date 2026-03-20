@@ -1,18 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Change this back to http://localhost:3000 if you test locally again
-    const SERVER_URL = 'https://email-tracker-cy15.onrender.com';
+    // PASTE YOUR NGROK URL HERE (e.g., 'https://1a2b3c4d.ngrok.app')
+const SERVER_URL = 'https://6c4b-14-139-197-66.ngrok-free.app';
 
     const logsContainer = document.getElementById('logsContainer');
     const refreshBtn = document.getElementById('refreshBtn');
 
+    /**
+     * Safely escape HTML to prevent XSS from malicious email subjects/recipients
+     */
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
     const fetchLogs = async () => {
         logsContainer.innerHTML = '<p>Loading logs...</p>';
         try {
-            const response = await fetch(SERVER_URL + '/api/logs');
-            if (!response.ok) throw new Error('Failed to fetch');
+            const response = await fetch(SERVER_URL + '/api/logs', {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
             const data = await response.json();
             
-            if (data.length === 0) {
+            if (!Array.isArray(data) || data.length === 0) {
                 logsContainer.innerHTML = '<p>No tracking logs found yet.</p>';
                 return;
             }
@@ -29,17 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const openedDate = safeOpenedDate ? new Date(safeOpenedDate).toLocaleString() : 'Not opened yet';
                 
                 const statusClass = log.opened ? 'opened' : 'unread';
-                const statusText = log.opened ? '&#10003; Opened on ' + openedDate : 'Unread';
+                const statusText = log.opened ? '&#10003; Opened on ' + escapeHtml(openedDate) : 'Unread';
 
-                item.innerHTML = '<p class="subject">' + log.subject + '</p>' +
-                    '<p class="details">To: ' + log.recipient + '</p>' +
-                    '<p class="details">Sent: ' + sentDate + '</p>' +
+                // Use escapeHtml for all user-sourced data to prevent XSS
+                item.innerHTML = '<p class="subject">' + escapeHtml(log.subject) + '</p>' +
+                    '<p class="details">To: ' + escapeHtml(log.recipient) + '</p>' +
+                    '<p class="details">Sent: ' + escapeHtml(sentDate) + '</p>' +
                     '<p class="status ' + statusClass + '">' + statusText + '</p>';
                 logsContainer.appendChild(item);
             });
         } catch (error) {
             logsContainer.innerHTML = '<p style="color: red;">Error connecting to tracker backend. Is the server running?</p>';
-            console.error(error);
+            console.error('[Popup] Fetch error:', error);
         }
     };
 

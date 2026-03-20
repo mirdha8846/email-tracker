@@ -1,18 +1,19 @@
 {
-  "name": "backend",
+  "name": "email-tracker-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Backend server for the Stealth Email Tracker extension",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
     "sqlite3": "^5.1.7",
-    "uuid": "^13.0.0"
+    "uuid": "^9.0.1"
   }
 }
