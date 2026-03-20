@@ -1,7 +1,7 @@
 console.log("Stealth Email Tracker content script injected.");
 
 // PASTE YOUR NGROK URL HERE (e.g., 'https://1a2b3c4d.ngrok.app')
-const SERVER_URL = 'https://6c4b-14-139-197-66.ngrok-free.app';
+const SERVER_URL = 'https://email-tracker-1-bfd1.onrender.com';
 
 /**
  * Find the Send button by walking up from the compose area.
